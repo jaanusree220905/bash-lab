@@ -1,5 +1,5 @@
 # DevOps Bash Automation Lab
-
+health-check automation is under development.
 ## Purpose
 This project contains Bash scripts for basic DevOps automation.
 
