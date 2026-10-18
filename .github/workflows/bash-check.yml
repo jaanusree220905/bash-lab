@@ -1,0 +1,34 @@
+name: Bash Script Validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Bash scripts
+        run: |
+          set -eu
+
+          files=$(find . -type f -name "*.sh" \
+            -not -path "./.git/*")
+
+          if [ -z "$files" ]; then
+            echo "No Bash scripts found."
+            exit 1
+          fi
+
+          while IFS= read -r file; do
+            echo "Checking $file"
+            bash -n "$file"
+          done <<EOF
+          $files
+          EOF
+
+          echo "All Bash scripts passed syntax validation."
