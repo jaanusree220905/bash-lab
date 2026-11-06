@@ -1,0 +1,37 @@
+
+name: Bash CI Pipeline
+
+on:
+  push:
+    branches: [main, feature/health-check]
+  pull_request:
+    branches: [main]
+
+jobs:
+  bash-validation:
+    name: Validate Bash Scripts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Bash syntax
+        shell: bash
+        run: |
+          mapfile -d '' -t scripts < <(
+            find . -type f -name "*.sh" \
+              -not -path "./.git/*" -print0
+          )
+
+          if [ "${#scripts[@]}" -eq 0 ]; then
+            echo "No Bash scripts found."
+            exit 1
+          fi
+
+          for script in "${scripts[@]}"; do
+            echo "Checking: $script"
+            bash -n "$script"
+          done
+
+          echo "All Bash scripts passed!"

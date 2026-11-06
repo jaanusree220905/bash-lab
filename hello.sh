@@ -1,11 +1,5 @@
 #!/bin/bash
 
-echo "Hello, DevOps Engineer!"
-echo "Today's date:"
-date
-
-echo "Current user:"
-whoami
-
-echo "Current directory:"
-pwd
+if [ 10 -gt 5 ]; then
+    echo "This works"
+fi
